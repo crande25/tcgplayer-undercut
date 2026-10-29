@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TCG Undercut: TCGplayer repricing bookmarklet</title>
+<meta name="description" content="Free bookmarklet for TCGplayer sellers. Finds your listings priced above the lowest listing, counting shipping, and undercuts them by $0.01 after you review and confirm.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TCG Undercut: TCGplayer repricing bookmarklet">
+<meta property="og:description" content="Finds your TCGplayer listings priced above the lowest listing, counting shipping, and undercuts them by $0.01 after you review and confirm.">
+<meta property="og:url" content="https://crande25.github.io/tcgplayer-undercut/install.html">
+<link rel="canonical" href="https://crande25.github.io/tcgplayer-undercut/install.html">
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #fff; --text: #1f2937; --muted: #6b7280; --line: #e5e7eb;
+    --accent: #1d4ed8; --accent-ink: #fff; --code: #f3f4f6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #111318; --card: #1a1d24; --text: #e5e7eb; --muted: #9ca3af; --line: #2b303b; --accent: #3b82f6; --code: #22262f; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 "Segoe UI", system-ui, -apple-system, Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { margin: 0 0 2px; font-size: 28px; }
+  h2 { margin: 32px 0 10px; font-size: 17px; }
+  .card h2 { margin-top: 0; }
+  .version { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+  .lede { margin: 0 0 24px; color: var(--muted); }
+  .card { padding: 20px 22px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+  ol, ul { margin: 0; padding-left: 20px; }
+  li { margin: 6px 0; }
+  .bookmarklet {
+    display: inline-block; margin: 12px 0 4px; padding: 10px 18px; border-radius: 8px;
+    background: var(--accent); color: var(--accent-ink); font-weight: 600; text-decoration: none; cursor: grab;
+  }
+  kbd { padding: 2px 6px; font: 12px/1 ui-monospace, Consolas, monospace; background: var(--code); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; }
+  details { margin-top: 14px; }
+  summary { cursor: pointer; color: var(--muted); }
+  textarea {
+    width: 100%; height: 90px; margin: 8px 0; padding: 8px; resize: vertical;
+    font: 12px/1.4 ui-monospace, Consolas, monospace; color: var(--text); background: var(--code);
+    border: 1px solid var(--line); border-radius: 8px;
+  }
+  button { padding: 6px 14px; font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 6px; cursor: pointer; }
+  .muted { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>TCG Undercut</h1>
+  <p class="version">Version {{VERSION}}</p>
+  <p class="lede">A bookmark button for your TCGplayer seller portal. It finds your in-stock listings that cost buyers more than the cheapest listing, counting shipping, and once you confirm, lowers them so your total is $0.01 under it.</p>
+
+  <div class="card">
+    <h2>Install it once</h2>
+    <ol>
+      <li>Show your bookmarks bar: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> in Chrome or Edge.</li>
+      <li>Drag this button onto the bookmarks bar:<br>
+        <a class="bookmarklet" href="{{BOOKMARKLET}}" title="Drag me to your bookmarks bar">TCG Undercut</a></li>
+    </ol>
+    <p class="muted">Replacing an older TCG Undercut bookmark? Right-click the old one and choose <b>Delete</b> first. The panel shows its version next to its name, so you can check which one you're running.</p>
+    <details>
+      <summary>Can't drag it?</summary>
+      <p class="muted">Right-click the bookmarks bar, choose <b>Add page…</b>, name it <b>TCG Undercut</b>, and paste this as its URL:</p>
+      <textarea id="code" readonly>{{BOOKMARKLET}}</textarea>
+      <button id="copy" type="button">Copy</button> <span id="copied" class="muted" aria-live="polite"></span>
+    </details>
+  </div>
+
+  <h2>Use it</h2>
+  <ol>
+    <li>In the seller portal, open <b>Inventory</b> (store.tcgplayer.com/admin/product/catalog).</li>
+    <li>Click <b>TCG Undercut</b> on the bookmarks bar. It reads every product in your inventory, which takes a few seconds. Clicked on another TCGplayer page, it offers to open Inventory for you; on a blank new tab the browser doesn't run it at all.</li>
+    <li>Review the table and untick anything you want to leave alone.</li>
+    <li>Click <b>Apply</b>, then <b>Yes, change prices</b>. Keep the tab open while it saves; the footer counts progress, and your browser asks before letting you leave. Each new price is read back from TCGplayer to confirm it took.</li>
+  </ol>
+
+  <h2>How it decides</h2>
+  <ul>
+    <li>It compares what a buyer pays, price + shipping, because that's how TCGplayer sorts listings. Shipping is counted the way TCGplayer's Match button counts it: if the cheapest listing's price is under $5, your shipping counts as at least the $1.49 minimum; at $5 or more, it's what you charge.</li>
+    <li>When your total is higher, the new price puts it $0.01 under the cheapest total. If the cheapest is $13.00 + $1.49 shipping and you ship that card free, your new price is $14.48. If the cheapest is $5.00 with free shipping and you're at $5.20, it offers $4.99.</li>
+    <li>A cut is marked <b>Big drop</b> and starts unticked when it is <b>10% or more</b> and your current price is <b>$10.00 or more</b>, in case the lowest listing is a mistake. For example, $50.39 → $40.29 (20%) is flagged, while $57.27 → $54.96 (4%) and $0.81 → $0.65 (20%, but under $10) stay ticked.</li>
+    <li>Right before saving, each product is read again. If its quantity, your price or the lowest listing changed since the scan, that row isn't saved and you're asked to rescan.</li>
+  </ul>
+
+  <h2>What it won't do</h2>
+  <ul>
+    <li>It never raises a price or changes a quantity. Each save sends back the quantity it has just re-read.</li>
+    <li>It never undercuts your own listing. Listings already at or below the lowest are left alone, and a lowest listing at exactly your price is treated as yours.</li>
+    <li>It never touches photo listings, out-of-stock items, or anything except the TCGplayer Marketplace price.</li>
+  </ul>
+
+  <h2>What the results mean</h2>
+  <ul>
+    <li><b>✓ Saved at $…</b>: TCGplayer now shows the new price.</li>
+    <li><b>⚠ Changed since the scan, so not saved</b>: the quantity, your price or the lowest listing moved after the table was built. Rescan to see that listing again.</li>
+    <li><b>⚠ Sent, but TCGplayer still shows the old price</b>: the save went out, but the new price hadn't appeared a few seconds later. Rescan in a minute; if it still shows the old price, change it on that product's Manage page.</li>
+    <li><b>✗</b> and a reason: that save failed. Check the product's Manage page before trying again.</li>
+    <li><b>Couldn't be read</b>, below the table: those products weren't checked, so none of their prices were changed.</li>
+  </ul>
+
+  <h2>Limits</h2>
+  <ul>
+    <li>It relies on how TCGplayer's seller pages work today. If TCGplayer changes them, the affected products show up as couldn't be read instead of being repriced.</li>
+    <li>It reads one page per product, so a large inventory takes a while: a few seconds per 10 products.</li>
+    <li>It doesn't work with staged inventory or with accounts that also sell through a My Store channel, and says so if you try.</li>
+  </ul>
+  <p class="muted">It runs in your browser with your existing TCGplayer sign-in and talks only to TCGplayer. It is unofficial and not affiliated with TCGplayer.</p>
+  <p class="muted">Source code, updates and issues: <a href="https://github.com/crande25/tcgplayer-undercut">github.com/crande25/tcgplayer-undercut</a>. MIT License.</p>
+</main>
+<script>
+  document.querySelector('.bookmarklet').addEventListener('click', event => {
+    event.preventDefault();
+    alert('Drag this button to your bookmarks bar, then click it on your seller portal Inventory page.');
+  });
+  document.getElementById('copy').addEventListener('click', async () => {
+    const code = document.getElementById('code');
+    try {
+      await navigator.clipboard.writeText(code.value);
+    } catch {
+      code.select();
+      document.execCommand('copy');
+    }
+    document.getElementById('copied').textContent = 'Copied';
+  });
+</script>
+</body>
+</html>
