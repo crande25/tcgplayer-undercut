@@ -11,6 +11,7 @@ All notable changes to TCG Undercut, newest first. The version shows in the pane
 
 ### Internal
 
+- Added `.gitattributes` to keep LF line endings in every checkout, so `build.ps1` produces the same `install.html` on any machine.
 - Added `LICENSE` (MIT), `index.html` (sends the Pages root to `install.html`) and `.nojekyll`, which makes Pages serve files as they are. Jekyll would read the `{{…}}` placeholders in the Markdown files as template tags.
 - Commits use the account's GitHub noreply address, which keeps the owner's email out of the public history.
 

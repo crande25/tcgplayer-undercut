@@ -1,0 +1,3 @@
+# The bookmarklet in install.html is built from tcg-undercut.js byte for byte, so keep LF line
+# endings in every checkout; otherwise the same source builds a different install.html on Windows.
+* text=auto eol=lf
